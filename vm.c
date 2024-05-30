@@ -179,7 +179,7 @@ void read_and_convert_fifo(char *filename)
         int TP_index = -1;  
         int TLB_index = -1; 
 
-        if (check_TLB(pagina_decimal) && check_TP(pagina_decimal))
+        if (check_TLB(pagina_decimal))
         {
             TLB_hits++;
             for (int j = 0; j < num_pagesTLB; j++)
@@ -198,6 +198,23 @@ void read_and_convert_fifo(char *filename)
                     break;
                 }
             }
+            if(check_TP(pagina_decimal) <0 || TP_index <0){
+                page_faults++;
+
+                if (num_pagesTP < MAX_TP)
+                {
+                    TP[num_pagesTP] = pagina_decimal;
+                    TP_index = num_pagesTP; 
+                    num_pagesTP++;
+                }
+                else
+                {
+                    TP[pagina_removidaTP] = pagina_decimal;
+                    TP_index = pagina_removidaTP; 
+                    pagina_removidaTP = (pagina_removidaTP + 1) % MAX_TP;
+                }
+            }
+            
             fprintf(output, "Virtual address: %d TLB: %d Physical address: %d Value: %d\n", n, TLB_index, TP_index * 256 + offset_decimal, value);
         }
         else if (check_TP(pagina_decimal))
