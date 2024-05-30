@@ -29,6 +29,7 @@ void read_and_convert_lru(char *filename);
 
 int main(int argc, char *argv[])
 {
+
     if (argc < 3) {
         printf("Usage: %s <filename> <fifo|lru>\n", argv[0]);
         return 1;
@@ -178,7 +179,7 @@ void read_and_convert_fifo(char *filename)
         int TP_index = -1;  
         int TLB_index = -1; 
 
-        if (check_TLB(pagina_decimal))
+        if (check_TLB(pagina_decimal) && check_TP(pagina_decimal))
         {
             TLB_hits++;
             for (int j = 0; j < num_pagesTLB; j++)
